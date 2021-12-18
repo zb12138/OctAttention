@@ -1,0 +1,13 @@
+*.pyc
+*.bak
+*.npz
+*.out
+*.log
+*/__pycache__
+__pycache__
+/.idea
+/.*
+/log
+/Exp
+/Data
+/temp

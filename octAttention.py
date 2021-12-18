@@ -71,8 +71,8 @@ class TransformerModel(nn.Module):
         # assert oct.min()>=0 and oct.max()<255
         # assert level.min()>=0 and level.max()<=12
         # assert octant.min()>=0 and octant.max()<=8
-        
-        torch.clip_(level,0,MAX_OCTREE_LEVEL) # the max level in traning dataset is 10
+        level -= torch.clip(level[:,:,-1:] - 12,0,None)# the max level in traning dataset is 12       
+        torch.clip_(level,0,MAX_OCTREE_LEVEL)
 
         aOct = self.encoder(oct.long()) #a[bptt,batchsize,FeatDim(levels),EmbeddingDim]
         aLevel = self.encoder1(level.long())

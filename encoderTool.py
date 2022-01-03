@@ -73,7 +73,7 @@ def compress(oct_data_seq,outputfile,model,actualcode = True,print=print,showRel
     #%%
     dataID,padingdata = dataPreProcess(oct_data_seq,bptt,batch_size,oct_len)
     MAX_GPU_MEM_It = 2**13 # you can change this according to the GUP memory size (2**12 for 24G)
-    MAX_GPU_MEM = min(bptt*MAX_GPU_MEM_It,dataID.max())+1  #  bptt <= MAX_GPU_MEM -1 < min(MAX_GPU,dataID)
+    MAX_GPU_MEM = min(bptt*MAX_GPU_MEM_It,dataID.max())+2  #  bptt <= MAX_GPU_MEM -1 < min(MAX_GPU,dataID)
 
     pro = torch.zeros((MAX_GPU_MEM,255)).to(device)
 

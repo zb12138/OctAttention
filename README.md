@@ -15,7 +15,7 @@ There are two branches named `obj` and `lidar` that implement Object and LiDAR p
 ## Requirements
 - python 3.7
 - PyTorch 1.9.0+cu102
-- `environment.sh` to help you build this environment
+- `file/environment.sh` to help you build this environment
 
 ## Download and Prepare Training and Testing Data
 - ### Download data
@@ -52,8 +52,11 @@ You should set the Network parameters `expName,DataRoot,etc.` in `networkTool.py
 This will output checkpoint in `expName` folder, e.g. `Exp/Kitti`. (Note: You should run `DataFolder.calcdataLenPerFile()` in `dataset.py` for a new dataset, and you can comment it after you get the parameter `dataLenPerFile`)
 
 ## Encode and Decode
+You may need to run the following command to provide `pc_error` and `tmc13v14` execute permission.
+```
+chmod +x file/pc_error file/tmc13v14 
+``` 
 - ### Encode
-
 ```
 python encoder.py  
 ```

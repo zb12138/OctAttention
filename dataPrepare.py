@@ -35,5 +35,6 @@ if __name__=="__main__":
             print(dataName,'maked!')
             continue
         dataPrepare(file,saveMatDir=outDir,ptNamePrefix=ptNamePrefix,offset=0,rotation=False)
+        # please set `rotation=True` in the `dataPrepare` function when processing MVUB data
         if n%10==0:
             printl(dataName)

@@ -59,9 +59,6 @@ def decodeOct(binfile,oct_data_seq,model,bptt):
         root =  decodeNode(freqsinit,dec)
         nodeId = 0
         
-        # for old dataset (e.g. from OctTrans)
-        # KfatherNode = KfatherNode[2:]+[[root,1,1]] #+ [[root,1,1]] # for padding for first row # (old data)
-        # for new dataset (e.g. from dataPrepare.py)
         KfatherNode = KfatherNode[3:]+[[root,1,1]] + [[root,1,1]] # for padding for first row # ( the parent of root node is root itself)
         
         nodeQ.append(KfatherNode) 
@@ -100,7 +97,7 @@ def decodeOct(binfile,oct_data_seq,model,bptt):
                             Code = oct_seq
                             return Code,time.time() - elapsed
                         oct_seq.append(root)
-                    assert oct_data_seq[nodeId] == root,'please check KfaterNode in line 60' # for check
+                    assert oct_data_seq[nodeId] == root # for check
 
 def decodeNode(pro,dec):
     root = dec.decode(np.expand_dims(pro,0))
@@ -131,4 +128,4 @@ if __name__=="__main__":
         # Dequantization
         DQpt = (ptrec*qs+offset)
         pt.write_ply_data(expName+"/temp/test/rec.ply",DQpt)
-        pt.pcerror(p,DQpt,None,'-r 1',None)
+        pt.pcerror(p,DQpt,None,'-r 1',None).wait()

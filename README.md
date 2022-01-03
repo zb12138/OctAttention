@@ -36,6 +36,7 @@ There are two branches named `obj` and `lidar` that implement Object and LiDAR p
     [JPEG MVUB](http://plenodb.jpeg.org/pc/microsoft) (8GB)  
     318/216/207 frames in andrew10, david10 and sarah10 for training  
     245/245/216/216 frames in Phil9/10 and Ricardo9/10 for testing  
+    (Note: We rotated the MVUB data to make it consistent with MPEG 8i, please set `rotation=True` in the `dataPrepare` function when processing MVUB data in training and testing.)
 
 - ### Prepare data
 Please set `oriDir` in `dataPrepare.py` before. 

@@ -19,7 +19,6 @@ def dataPrepare(fileName,saveMatDir='Data',qs=1,ptNamePrefix='',offset='min',qle
     ptName = ptNamePrefix+os.path.splitext(os.path.basename(fileName))[0] 
     p = pointCloud.ptread(fileName)
     
-    
     refPt = p
     if normalize is True: # normalize pc to [-1,1]^3
         p = p - np.mean(p,axis=0)
@@ -31,7 +30,7 @@ def dataPrepare(fileName,saveMatDir='Data',qs=1,ptNamePrefix='',offset='min',qle
         refPt[:,2] = - refPt[:,2]
 
     if offset is 'min':
-        offset = np.min(p,0)
+        offset = np.min(refPt,0)
 
     points = refPt - offset
 

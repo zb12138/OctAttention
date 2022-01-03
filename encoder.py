@@ -33,7 +33,8 @@ if __name__=="__main__":
         ptName = os.path.splitext(os.path.basename(oriFile))[0] 
         for qs in [1]:
             ptNamePrefix = ptName
-            matFile,DQpt,_ = dataPrepare(oriFile,saveMatDir='./Data/testPly',qs=qs,ptNamePrefix='',rotation=False)
+            matFile,DQpt,refPt = dataPrepare(oriFile,saveMatDir='./Data/testPly',qs=qs,ptNamePrefix='',rotation=False)
+            # please set `rotation=True` in the `dataPrepare` function when processing MVUB data
             main(matFile,model,actualcode=True,printl =printl) # actualcode=False: bin file will not be generated
             print('_'*50,'pc_error','_'*50)
-            pointCloud.pcerror(oriFile,DQpt,None,'-r 1023',None).wait()
+            pointCloud.pcerror(refPt,DQpt,None,'-r 1023',None).wait()

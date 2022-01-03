@@ -131,4 +131,4 @@ if __name__=="__main__":
         # Dequantization
         DQpt = (ptrec*qs+offset)
         pt.write_ply_data(expName+"/test/rec.ply",DQpt)
-        pt.pcerror(p,DQpt,None,'-r 1',None)
+        pt.pcerror(p,DQpt,None,'-r 1',None).wait()

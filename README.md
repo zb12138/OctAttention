@@ -43,13 +43,13 @@ Please set `oriDir` in `dataPrepare.py` before.
 ```
 python dataPrepare.py
 ```
-To prepare train and test data (about 2~4 days). It will generate `*.mat` data in the directory `Data`.  
+To prepare train and test data. It will generate `*.mat` data in the directory `Data`.  
     
 ## Train
 ```
 python octAttention.py 
 ```
-You should set the Network parameters `expName,DataRoot,etc.` in `networkTool.py`.
+You should set the Network parameters `expName,DataRoot`etc. in `networkTool.py`.
 This will output checkpoint in `expName` folder, e.g. `Exp/Kitti`. (Note: You should run `DataFolder.calcdataLenPerFile()` in `dataset.py` for a new dataset, and you can comment it after you get the parameter `dataLenPerFile`)
 
 ## Encode and Decode

@@ -6,11 +6,11 @@
  * @Description: README
  * @FilePath: /compression/README.md
 -->
-# OctAttention: Octree-based Large-scale Context Model for Point Cloud Compression
+# OctAttention: Octree-based Large-scale Contexts Model for Point Cloud Compression
 
 ## Branches
 
-There are two branches named `obj` and `lidar` that implement Object and LiDAR point cloud coding respectively. They share the same network. [Paper]().
+There are two branches named `obj` and `lidar` that implement Object and LiDAR point cloud coding respectively. They share the same network. [Paper](http://arxiv.org/abs/2202.06028).
 
 ## Requirements
 - python 3.7

@@ -79,7 +79,7 @@ python testTMC.py
 If this work is useful for your research, please consider citing :
 
     @inproceedings{OctAttention,
-    title={OctAttention: Octree-based Large-scale Context Model for Point Cloud Compression},
+    title={OctAttention: Octree-based Large-scale Contexts Model for Point Cloud Compression},
     author={Fu, Chunyang and Li, Ge and Song, Rui and Gao, Wei and Liu, Shan},
     booktitle={Proceedings of the AAAI Conference on Artificial Intelligence (AAAI)},
     year={2022}

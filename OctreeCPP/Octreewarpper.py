@@ -1,8 +1,7 @@
 '''
 Author: fuchy@stu.pku.edu.cn
-LastEditors: FCY
-Description: The octree c++ version
-All rights reserved.
+LastEditors: Please set LastEditors
+Description: 
 '''
 from ctypes import *
 import numpy as np
@@ -19,7 +18,7 @@ class Node(Structure):
         # ('pointIdx',c_void_p),
         ('pos',c_uint*3)
     ]
-
+c_double_p = POINTER(c_double)
 c_uint16_p = POINTER(c_uint16)
 lib = cdll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'/Octree_python_lib.so') # class level loading lib
 lib.new_vector.restype = c_void_p
@@ -33,7 +32,7 @@ lib.vector_get.argtypes = [c_void_p, c_int]
 lib.vector_push_back.restype = None
 lib.vector_push_back.argtypes = [c_void_p, c_int]
 lib.genOctreeInterface.restype = c_void_p
-lib.genOctreeInterface.argtypes = [c_void_p ,c_uint16_p,c_int]
+lib.genOctreeInterface.argtypes = [c_void_p ,c_double_p,c_int]
 lib.Nodes_get.argtypes = [c_void_p,c_int]
 lib.Nodes_get.restype = POINTER(Node)
 lib.Nodes_size.restype = c_int
@@ -49,8 +48,8 @@ lib.int_get.argtypes = [c_void_p,c_int]
 class COctree(object):
 
     def __init__(self):
-        self.vector = lib.new_vector()  # pointer to new vector
-        self.code = None
+        self.vector = lib.new_vector()  # octree pointer to new vector
+        self.code = None 
     def __del__(self):  # when reference count hits 0 in Python,
         lib.delete_vector(self.vector)  # call C++ vector destructor
 
@@ -72,9 +71,9 @@ class COctree(object):
         lib.vector_push_back(self.vector, c_int(i))
 
     def genOctree(self, p):  # foo in Python calls foo in C++
-        c_uint16_p = POINTER(c_uint16)
-        data = np.ascontiguousarray(p).astype(np.uint16)
-        data_p = data.ctypes.data_as(c_uint16_p)
+        
+        data = np.ascontiguousarray(p).astype(np.double)
+        data_p = data.ctypes.data_as(c_double_p)
         self.code = OctCode(lib.genOctreeInterface(self.vector,data_p,data.shape[0]))
 
 class OctCode():

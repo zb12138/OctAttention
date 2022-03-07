@@ -104,3 +104,13 @@ def GenKparentSeq(Octree,K):
     assert n==nodeNum
     DataStruct = {'Seq':Seq,'Level':LevelOctant,'ChildID':ChildID,'Pos':Pos}
     return DataStruct
+
+
+if __name__=='__main__':
+    import pt
+    p = pt.ptread('pt0.ply')
+    print(p.max())
+    code,Octree,QLevel = GenOctree(p)
+    print(len(code))
+    dp = DeOctree(code)
+    pt.pcerror(p,dp,None,'-r 1024',None).wait()

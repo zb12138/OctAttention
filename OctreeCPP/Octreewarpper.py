@@ -20,7 +20,7 @@ class Node(Structure):
     ]
 c_double_p = POINTER(c_double)
 c_uint16_p = POINTER(c_uint16)
-lib = cdll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'/Octree_python_libN.so') # class level loading lib
+lib = cdll.LoadLibrary(os.path.dirname(os.path.abspath(__file__))+'/Octree_python_lib.so') # class level loading lib
 lib.new_vector.restype = c_void_p
 lib.new_vector.argtypes = []
 lib.delete_vector.restype = None

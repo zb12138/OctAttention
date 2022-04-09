@@ -33,8 +33,9 @@ def dataPreProcess(oct_seq,bptt,batch_size,oct_len):
     padingsize = batch_size - padingdata.shape[0]%batch_size            
     padingdata = torch.vstack((padingdata,torch.zeros(padingsize,levelNumK,FeatDim))).reshape((batch_size,-1,levelNumK,FeatDim)).permute(1,0,2,3)          #[bptt,batch_size,K]
     dataID = torch.hstack((torch.ones(bptt)*-1,torch.Tensor(list(range(oct_len))),torch.ones((padingsize))*-1)).reshape((batch_size,-1)).long().permute(1,0)
-    padingdata = torch.vstack((padingdata, padingdata[0:bptt,list(range(1,batch_size,1))+[0]])).long()
-    dataID = torch.vstack((dataID, dataID[0:bptt,list(range(1,batch_size,1))+[0]])).long()
+    if batch_size>1:
+        padingdata = torch.vstack((padingdata, padingdata[0:bptt,list(range(1,batch_size,1))+[0]])).long()
+        dataID = torch.vstack((dataID, dataID[0:bptt,list(range(1,batch_size,1))+[0]])).long()
     return dataID,padingdata
 
 def encodeNode(pro,octvalue):

@@ -34,9 +34,8 @@ def dataPreProcess(oct_seq,bptt,batch_size,oct_len):
     padingsize = batch_size - padingdata.shape[0]%batch_size            
     padingdata = torch.vstack((padingdata,torch.zeros(padingsize,levelNumK,FeatDim))).reshape((batch_size,-1,levelNumK,FeatDim)).permute(1,0,2,3)          #[bptt,batch_size,K]
     dataID = torch.hstack((torch.ones(bptt)*-1,torch.Tensor(list(range(oct_len))),torch.ones((padingsize))*-1)).reshape((batch_size,-1)).long().permute(1,0)
-    if batch_size>1:
-        padingdata = torch.vstack((padingdata, padingdata[0:bptt,list(range(1,batch_size,1))+[0]])).long()
-        dataID = torch.vstack((dataID, dataID[0:bptt,list(range(1,batch_size,1))+[0]])).long()
+    padingdata = torch.vstack((padingdata, padingdata[0:bptt,list(range(1,batch_size,1))+[0]])).long()
+    dataID = torch.vstack((dataID, dataID[0:bptt,list(range(1,batch_size,1))+[0]])).long()
     return dataID,padingdata
 
 def encodeNode(pro,octvalue):
@@ -109,8 +108,11 @@ def compress(oct_data_seq,outputfile,model,actualcode = True,print=print,showRel
             nodeID = nodeID.reshape(-1)
             p  = torch.softmax(output,1)
             pro[nodeID,:] = p
-
-    proBit.append(pro[:nodeID.max()+1].detach().cpu().numpy())
+            
+    if not proBit: # all data is in the MAX_GPU_MEM
+        proBit.append(pro[:dataID.max()+1].detach().cpu().numpy())
+    else:
+        proBit.append(pro[:nodeID.max()+1].detach().cpu().numpy())
     del pro,input,src_mask
     torch.cuda.empty_cache()
     proBit = np.vstack(proBit)

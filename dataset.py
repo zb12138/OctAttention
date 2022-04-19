@@ -77,7 +77,7 @@ class DataFolder(data.Dataset):
             self.dataBuffer.append(np.vstack(tuple(a)))
 
             self.datalen = self.dataBuffer[0].shape[0]
-            self.fileIndx+=1  # shuffle step = 1, will load continuous mat
+            self.fileIndx+=200  # shuffle step = 1, will load continuous mat
             self.index = 0
             if(self.fileIndx>=self.fileLen):
                 self.fileIndx=index%self.fileLen

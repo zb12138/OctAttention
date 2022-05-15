@@ -33,4 +33,4 @@ if __name__=="__main__":
             main(matFile,model,actualcode=True,printl =printl) # actualcode=False: bin file will not be generated
             print('_'*50,'pc_error','_'*50)
             pointCloud.pcerror(normalizePt,DQpt,None,'-r 1',None).wait()
-            print('cd %e'%pt.distChamfer(normalizePt,DQpt))
+            print('cd %e'%pointCloud.distChamfer(normalizePt,DQpt))

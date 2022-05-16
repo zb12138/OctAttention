@@ -32,7 +32,6 @@ There are two branches named `obj` and `lidar` that implement Object and LiDAR p
     
     [MPEG 8iVSLF](https://disk.pku.edu.cn/#/link/E08699D04D09244C82E50D0C44093F34%20%E6%9C%89%E6%95%88%E6%9C%9F%E9%99%90%EF%BC%9A2025-08-31%2023:59) (100M)  
     1/1/1/1 frame in Boxer9/10 and Thaidancer9/10 (quantized from 12bit data) for testing.
-    
     please cite: Maja Krivokuća, Philip A. Chou, and Patrick Savill, “8i Voxelized Surface Light  Field (8iVSLF) Dataset,” ISO/IEC  JTC1/SC29 WG11  (MPEG)  input   document m42914, Ljubljana, July 2018.
 
     [JPEG MVUB](http://plenodb.jpeg.org/pc/microsoft) (8GB)  

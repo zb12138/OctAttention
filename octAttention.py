@@ -140,7 +140,7 @@ if __name__=="__main__":
     best_model = None
     batch_size = 128
     TreePoint = bptt*16
-    train_set = dataset.DataFolder(root=trainDataRoot, TreePoint=TreePoint,transform=None,dataLenPerFile= 17456051) # you should run 'dataLenPerFile' in dataset.py to get this num (17456051.4)
+    train_set = dataset.DataFolder(root=trainDataRoot, TreePoint=TreePoint,transform=None,dataLenPerFile= None) # you should run 'dataLenPerFile' in dataset.py to get this num (17456051.4)
     train_loader = data.DataLoader(dataset=train_set, batch_size=batch_size, shuffle=False, num_workers=4,drop_last=True) # will load TreePoint*batch_size at one time
     
     # loger

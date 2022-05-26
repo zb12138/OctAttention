@@ -45,8 +45,8 @@ class DataFolder(data.Dataset):
         self.TreePoint = TreePoint
         self.fileLen = len(self.dataNames)
         assert self.fileLen>0,'no file found!'
-        self.dataLenPerFile = dataLenPerFile # you can replace 'dataLenPerFile' with the certain number in the 'calcdataLenPerFile'
-        # self.dataLenPerFile = self.calcdataLenPerFile() # you can comment this line after you ran the 'calcdataLenPerFile'
+        # self.dataLenPerFile = dataLenPerFile # you can replace 'dataLenPerFile' with the certain number in the 'calcdataLenPerFile'
+        self.dataLenPerFile = self.calcdataLenPerFile() # you can comment this line after you ran the 'calcdataLenPerFile'
         
     def calcdataLenPerFile(self):
         dataLenPerFile = 0

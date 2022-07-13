@@ -79,9 +79,8 @@ python testTMC.py
 ## Citation
 If this work is useful for your research, please consider citing :
 
-    @inproceedings{OctAttention,
-    title={OctAttention: Octree-Based Large-Scale Contexts Model for Point Cloud Compression},
-    author={Fu, Chunyang and Li, Ge and Song, Rui and Gao, Wei and Liu, Shan},
-    booktitle={Proceedings of the AAAI Conference on Artificial Intelligence (AAAI)},
-    year={2022}
+    @article{OctAttention, 
+    title={OctAttention: Octree-Based Large-Scale Contexts Model for Point Cloud Compression}, 
+    volume={36}, url={https://ojs.aaai.org/index.php/AAAI/article/view/19942}, DOI={10.1609/aaai.v36i1.19942}, 
+    author={Fu, Chunyang and Li, Ge and Song, Rui and Gao, Wei and Liu, Shan}, year={2022}, month={Jun.}, pages={625-633} 
     }

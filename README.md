@@ -6,11 +6,12 @@
  * @Description: README
  * @FilePath: /compression/README.md
 -->
-# OctAttention: Octree-Based Large-Scale Contexts Model for Point Cloud Compression
+# OctAttention: Octree-Based Large-Scale Contexts Model for Point Cloud Compression. AAAI 2022 [Paper](https://ojs.aaai.org/index.php/AAAI/article/view/19942).
 
 ## Branches
 
-There are two branches named `obj` and `lidar` that implement Object and LiDAR point cloud coding respectively. They share the same network. [Paper](http://arxiv.org/abs/2202.06028).
+There are two branches named `obj` and `lidar` that implement Object and LiDAR point cloud coding respectively. They share the same network. 
+Note: the checkpoint file is saved in the corresponding branch separately. The model for LiDAR compression is [here](https://github.com/zb12138/OctAttention/tree/lidar/modelsave/lidar). 
 
 ## Requirements
 - python 3.7

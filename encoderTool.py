@@ -13,7 +13,7 @@ from networkTool import device,bptt,expName,levelNumK,MAX_OCTREE_LEVEL
 from dataset import default_loader as matloader
 import numpyAc
 import tqdm
-bpttRepeatTime = 1
+
 
 
 def generate_square_subsequent_mask(sz):
@@ -25,17 +25,14 @@ def generate_square_subsequent_mask(sz):
 '''
 description: Rearrange data for batch processing
 '''
-def dataPreProcess(oct_seq,bptt,batch_size,oct_len):
+def batchify(oct_seq,bptt,oct_len):
+    oct_seq[:-1,0:-1,:] = oct_seq[1:,0:-1,:]
+    oct_seq[:-1,-1,1:3] = oct_seq[1:,-1,1:3]  
     oct_seq[:,:,0] = oct_seq[:,:,0] - 1
-    oct_seq = torch.Tensor(oct_seq).long()    # [1,255]->[0,254]. shape [n,K]
-    FeatDim = oct_seq.shape[-1]
-    padingdata = torch.vstack((torch.zeros((bptt,levelNumK,FeatDim)),oct_seq)) # to be the context of oct[0]
-    padingsize = batch_size - padingdata.shape[0]%batch_size            
-    padingdata = torch.vstack((padingdata,torch.zeros(padingsize,levelNumK,FeatDim))).reshape((batch_size,-1,levelNumK,FeatDim)).permute(1,0,2,3)          #[bptt,batch_size,K]
-    dataID = torch.hstack((torch.ones(bptt)*-1,torch.Tensor(list(range(oct_len))),torch.ones((padingsize))*-1)).reshape((batch_size,-1)).long().permute(1,0)
-    padingdata = torch.vstack((padingdata, padingdata[0:bptt,list(range(1,batch_size,1))+[0]])).long()
-    dataID = torch.vstack((dataID, dataID[0:bptt,list(range(1,batch_size,1))+[0]])).long()
-    return dataID,padingdata
+    pad_len = bptt#int(np.ceil(len(oct_seq)/bptt)*bptt - len(oct_seq))
+    oct_seq = torch.Tensor(np.r_[np.zeros((bptt,*oct_seq.shape[1:])),oct_seq,np.zeros((pad_len,*oct_seq.shape[1:]))])
+    dataID = torch.LongTensor(np.r_[np.ones((bptt))*-1,np.arange(oct_len),np.ones((pad_len))*-1])
+    return dataID.unsqueeze(1),oct_seq.unsqueeze(1)
 
 def encodeNode(pro,octvalue):
     assert octvalue<=255 and octvalue>=1
@@ -61,9 +58,7 @@ def compress(oct_data_seq,outputfile,model,actualcode = True,print=print,showRel
     if levelID.max()>MAX_OCTREE_LEVEL:
         print('**warning!!**,to clip the level>{:d}!'.format(MAX_OCTREE_LEVEL))
         
-    oct_seq = oct_data_seq[:,-1:,0].astype(int) 
-    oct_data_seq[:-1,0:-1,:] = oct_data_seq[1:,0:-1,:]
-    oct_data_seq[:-1,-1,1:3] = oct_data_seq[1:,-1,1:3]     
+    oct_seq = oct_data_seq[:,-1:,0].astype(int)   
     oct_len = len(oct_seq)
  
     batch_size =1  # 1 for safety encoder
@@ -71,12 +66,10 @@ def compress(oct_data_seq,outputfile,model,actualcode = True,print=print,showRel
     assert(batch_size*bptt<oct_len)
     
     #%%
-    dataID,padingdata = dataPreProcess(oct_data_seq,bptt,batch_size,oct_len)
-    MAX_GPU_MEM_It = 2**13 # you can change this according to the GUP memory size (2**12 for 24G)
+    dataID,padingdata = batchify(oct_data_seq,bptt,oct_len)
+    MAX_GPU_MEM_It = 2**13 # you can change this according to the GPU memory size (2**12 for 24G)
     MAX_GPU_MEM = min(bptt*MAX_GPU_MEM_It,dataID.max())+2  #  bptt <= MAX_GPU_MEM -1 < min(MAX_GPU,dataID)
-
     pro = torch.zeros((MAX_GPU_MEM,255)).to(device)
-
     padingLength = padingdata.shape[0]
     src_mask = generate_square_subsequent_mask(bptt).to(device)
     padingdata = padingdata
@@ -88,30 +81,21 @@ def compress(oct_data_seq,outputfile,model,actualcode = True,print=print,showRel
     else:
         trange = tqdm.trange
     with torch.no_grad():
-        for n,i in enumerate(trange(0, padingLength-bptt , bptt//bpttRepeatTime)):
-            seq_len = min(bptt, padingLength - 1 - i)
-            input = padingdata[i:i+seq_len].long().to(device)   #input torch.Size([256, 32, 4, 3]) bptt,batch_sz,kparent,[oct,level,octant]
- 
-            if( n % MAX_GPU_MEM_It==0 and n):
-                proBit.append(pro[:nodeID.max()+1].detach().cpu().numpy())
-                offset = offset + nodeID.max() +1
-            nodeID = dataID[i+seq_len - bptt//bpttRepeatTime+1:i+seq_len+1].squeeze(0) - offset
-            nodeID[nodeID<0] = -1 #for padding data
-            if input.size(0) != bptt:
-                src_mask = generate_square_subsequent_mask(input.size(0))
+        for n,i in enumerate(trange(0, padingLength-bptt , bptt)):
+            input = padingdata[i:i+bptt].long().to(device)   #input torch.Size([256, 32, 4, 3]) bptt,batch_sz,kparent,[oct,level,octant]
+            nodeID = dataID[i+1:i+bptt+1].squeeze(0) - offset
+            nodeID[nodeID<0] = -1
             start_time = time.time()
             output = model(input,src_mask,[])
             elapsed =elapsed+ time.time() - start_time
-
-            output = output[bptt-bptt//bpttRepeatTime:].reshape(-1,255)
+            output = output.reshape(-1,255)
             nodeID = nodeID.reshape(-1)
             p  = torch.softmax(output,1)
             pro[nodeID,:] = p
+            if( (n % MAX_GPU_MEM_It==0 and n>0) or n == padingLength//bptt-1):
+                proBit.append(pro[:nodeID.max()+1].detach().cpu().numpy())
+                offset = offset + nodeID.max() +1
 
-    if not proBit:# all data is in the MAX_GPU_MEM
-        proBit.append(pro[:dataID.max()+1].detach().cpu().numpy())
-    else:
-        proBit.append(pro[:nodeID.max()+1].detach().cpu().numpy())
     del pro,input,src_mask
     torch.cuda.empty_cache()
     proBit = np.vstack(proBit)

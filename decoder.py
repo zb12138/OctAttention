@@ -22,7 +22,7 @@ from encoderTool import generate_square_subsequent_mask
 from encoder import model,list_orifile
 import numpyAc
 batch_size = 1 
-
+bpttRepeatTime = 1
 #%%
 '''
 description: decode bin file to occupancy code

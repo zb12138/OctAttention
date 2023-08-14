@@ -18,7 +18,7 @@ from collections import deque
 import os 
 import time
 from networkTool import *
-from encoderTool import bpttRepeatTime,generate_square_subsequent_mask
+from encoderTool import generate_square_subsequent_mask
 from encoder import model,list_orifile
 import numpyAc
 batch_size = 1 

@@ -54,9 +54,9 @@ You should set the Network parameters `expName,DataRoot`etc. in `networkTool.py`
 This will output checkpoint in `expName` folder, e.g. `Exp/Kitti`. (Note: You should run `DataFolder.calcdataLenPerFile()` in `dataset.py` for a new dataset, and you can comment it after you get the parameter `dataLenPerFile`)
 
 ## Encode and Decode
-You may need to run the following command to provide `pc_error` and `tmc13v14` execute permission.
+You may need to run the following command to provide `pc_error` and `tmc13v14_r`(release version) execute permission.
 ```
-chmod +x file/pc_error file/tmc13v14 
+chmod +x file/pc_error file/tmc13v14_r 
 ``` 
 - ### Encode
 ```

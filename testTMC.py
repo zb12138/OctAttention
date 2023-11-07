@@ -24,13 +24,13 @@ if __name__=="__main__":
             pointCloud.write_ply_data('./temp/tmc/normalizePt.ply',normalizePt*GPCC_MULTIPLE)
             qstmc =  1/(2/(2**qlevel-1))/GPCC_MULTIPLE
             print('_'*50,'encode','_'*50)
-            cmd = "./file/tmc13v14 --mode=0 -c ./file/kitti.cfg --uncompressedDataPath=./temp/tmc/normalizePt.ply --compressedStreamPath=./temp/tmc/tmc.bin --mergeDuplicatedPoints=1 --positionBaseQp=4 --positionQuantizationScale="+str(qstmc)
+            cmd = "./file/tmc13v14_r --mode=0 -c ./file/kitti.cfg --uncompressedDataPath=./temp/tmc/normalizePt.ply --compressedStreamPath=./temp/tmc/tmc.bin --mergeDuplicatedPoints=1 --positionBaseQp=4 --positionQuantizationScale="+str(qstmc)
             p = Popen(cmd, shell=True).wait()
             print('ptNum ',normalizePt.shape[0])      
             print('tmc bpip ',os.path.getsize('./temp/tmc/tmc.bin')*8/normalizePt.shape[0])
             
             print('_'*50,'decode','_'*50)
-            cmd = "./file/tmc13v14  --mode=1 --reconstructedDataPath=./temp/tmc/recPt.ply --compressedStreamPath=./temp/tmc/tmc.bin"
+            cmd = "./file/tmc13v14_r  --mode=1 --reconstructedDataPath=./temp/tmc/recPt.ply --compressedStreamPath=./temp/tmc/tmc.bin"
             Popen(cmd, shell=True).wait()
 
             print('_'*50,'pc_error','_'*50)

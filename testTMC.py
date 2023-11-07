@@ -23,7 +23,7 @@ if __name__=="__main__":
         pointCloud.write_ply_data('./temp/tmc/p.ply',p*GPCC_MULTIPLE)
         qstmc =  1.0
         print('_'*50,'encode','_'*50)
-        cmd = "./file/tmc13v14 --mode=0 -c ./file/redandblack.cfg --uncompressedDataPath=./temp/tmc/p.ply --compressedStreamPath=./temp/tmc/tmc.bin --mergeDuplicatedPoints=1 --positionBaseQp=4 --positionQuantizationScale="+str(qstmc)
+        cmd = "./file/tmc13v14_r --mode=0 -c ./file/redandblack.cfg --uncompressedDataPath=./temp/tmc/p.ply --compressedStreamPath=./temp/tmc/tmc.bin --mergeDuplicatedPoints=1 --positionBaseQp=4 --positionQuantizationScale="+str(qstmc)
         Popen(cmd, shell=True).wait()
         print('ptNum: ',p.shape[0]) 
         bz = os.path.getsize('./temp/tmc/tmc.bin')*8
@@ -31,7 +31,7 @@ if __name__=="__main__":
         print('tmc bpip: ',bz/p.shape[0])
         
         print('_'*50,'decode','_'*50)
-        cmd = "./file/tmc13v14  --mode=1 --reconstructedDataPath=./temp/tmc/recPt.ply --compressedStreamPath=./temp/tmc/tmc.bin"
+        cmd = "./file/tmc13v14_r  --mode=1 --reconstructedDataPath=./temp/tmc/recPt.ply --compressedStreamPath=./temp/tmc/tmc.bin"
         Popen(cmd, shell=True).wait()
 
         print('_'*50,'pc_error','_'*50)
